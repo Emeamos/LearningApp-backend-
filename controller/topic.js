@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 import Subject from "../models/subject.js";
 import Topic from "../models/topic.js";
 
@@ -24,10 +25,12 @@ export const addTopic = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 export const getTopicsBySubjectId = async (req, res) => {
   try {
     const { subjectId } = req.params;
+    if (!ObjectId.isValid(subjectId)) {
+      return res.status(404).json({ error: "Invalid subjectId" });
+    }
     const subject = await Subject.findById(subjectId);
     if (!subject) {
       return res.status(404).json({ error: "Subject not found" });
@@ -39,6 +42,21 @@ export const getTopicsBySubjectId = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+// export const getTopicsBySubjectId = async (req, res) => {
+//   try {
+//     const { subjectId } = req.params;
+//     const subject = await Subject.findById(subjectId);
+//     if (!subject) {
+//       return res.status(404).json({ error: "Subject not found" });
+//     }
+//     const topics = await Topic.find({ subject: subjectId }).populate("subject");
+//     res.status(200).json(topics);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// };
 
 // export const getTopicById = async (req, res) => {
 //   try {
