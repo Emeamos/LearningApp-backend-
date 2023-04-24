@@ -16,7 +16,7 @@ export const addTopic = async (req, res) => {
       subject: subjectId,
     });
     await topic.save();
-    subject.topic.push(topic);
+    subject.topics.push(topic);
     await subject.save();
     res.status(201).json(topic);
   } catch (error) {
