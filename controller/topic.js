@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Subject from "../models/subject.js";
 import Topic from "../models/topic.js";
 
@@ -52,9 +53,30 @@ export const getTopicsBySubjectId = async (req, res) => {
 //     res.status(500).json({ error: "Server error" });
 //   }
 // };
+// export const getTopicById = async (req, res) => {
+//   try {
+//     const { subjectId, topicId } = req.params;
+//     const subject = await Subject.findById(subjectId).populate('topics');
+//     if (!subject) {
+//       return res.status(404).json({ error: "Subject not found" });
+//     }
+//     const topic = subject.topics.find(t => t._id.toString() === topicId);
+//     if (!topic) {
+//       return res.status(404).json({ message: 'topic not found for this course' });
+//     }
+//     res.status(200).json(topic);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// };
+
 export const getTopicById = async (req, res) => {
   try {
     const { subjectId, topicId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+      return res.status(400).json({ error: "Invalid subject ID" });
+    }
     const subject = await Subject.findById(subjectId).populate('topics');
     if (!subject) {
       return res.status(404).json({ error: "Subject not found" });
@@ -69,4 +91,5 @@ export const getTopicById = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
 
