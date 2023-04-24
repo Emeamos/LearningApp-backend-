@@ -25,7 +25,7 @@
 
 const subjectSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  topicsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }]
+  topics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }]
 });
 
 const Subject = mongoose.model('Subject', subjectSchema);
