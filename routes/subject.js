@@ -15,7 +15,7 @@ subjectRoute.get("/", getSubjects);
 subjectRoute.post("/:subjectId/topics", addTopic);
 
 //get topics for a subject
-subjectRoute.get( "/:subjectId/topics", getTopicsBySubjectId);
+subjectRoute.get( `/${subjectId}/topics`, getTopicsBySubjectId);
 
 //get topic by id
 subjectRoute.get( "/:subjectId/topics/:topicId", getTopicById);
