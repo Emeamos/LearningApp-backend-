@@ -50,7 +50,8 @@ export const getTopicsBySubjectId = async (req, res) => {
     if (!subject) {
       return res.status(404).json({ error: "Subject not found" });
     }
-    const topics = await Topic.find({ subject: subjectId }).populate("subject");
+    //const topics = await Topic.find({ subject: subjectId }).populate("subject");//
+    const topics = await Subject.find(subjectId).populate("topics")
     res.status(200).json(topics);
   } catch (err) {
     console.error(err);
