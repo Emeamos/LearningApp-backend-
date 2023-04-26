@@ -43,21 +43,44 @@ export const addTopic = async (req, res) => {
 //   }
 // };
 
+// export const getTopicsBySubjectId = async (req, res) => {
+//   try {
+//     const { subjectId } = req.params;
+//     const isValidObjectId = mongoose.Types.ObjectId.isValid(subjectId);
+// if (!isValidObjectId) {
+//   return res.status(404).json({ error: "Invalid subjectId" });
+// }
+//     const subject = await Subject.findById(subjectId).populate('topics');
+//     if (!subject) {
+//       return res.status(404).json({ error: "Subject not found" });
+//     }
+//     //const topics = await Topic.find({ subject: subjectId }).populate("subject");//
+//     const topics = await Subject.find(subjectId).populate("topics")
+//     res.status(200).json(topics);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// };
 export const getTopicsBySubjectId = async (req, res) => {
   try {
     const { subjectId } = req.params;
-    const subject = await Subject.findById(subjectId);
+    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+      return res.status(404).json({ error: "Invalid subjectId" });
+    }
+    const subject = await Subject.findById(subjectId).populate('topics');
     if (!subject) {
       return res.status(404).json({ error: "Subject not found" });
     }
-    //const topics = await Topic.find({ subject: subjectId }).populate("subject");//
-    const topics = await Subject.find(subjectId).populate("topics")
+    const topics = await Topic.find({ subject: subjectId }).populate("subject");
     res.status(200).json(topics);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
   }
 };
+
+
 
 // export const getTopicById = async (req, res) => {
 //   try {
